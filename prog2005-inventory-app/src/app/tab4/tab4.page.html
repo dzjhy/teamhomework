@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>隐私与安全</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showHelp()">
+        <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h2>隐私政策</h2>
+  <p>本应用仅用于PROG2005课程作业目的。</p>
+  <ul>
+    <li>我们不会收集或存储任何个人身份信息。</li>
+    <li>所有库存数据仅存储在课程指定的远程服务器上。</li>
+    <li>数据仅用于作业演示，不会用于任何商业用途。</li>
+  </ul>
+
+  <h2 class="ion-margin-top">安全措施</h2>
+  <ul>
+    <li>数据传输通过HTTPS加密协议进行。</li>
+    <li>服务器由Southern Cross University IT部门维护。</li>
+    <li>删除操作受保护，关键物品（如Laptop）不可删除以保证数据完整性。</li>
+  </ul>
+
+  <p class="ion-margin-top">如有疑问，请联系课程负责人。</p>
+</ion-content>

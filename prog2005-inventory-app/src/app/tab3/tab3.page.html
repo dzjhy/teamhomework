@@ -1,17 +1,90 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>编辑/删除物品</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showHelp()">
+        <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar 
+      placeholder="输入要编辑的物品名称" 
+      [(ngModel)]="searchName"
+      (ionChange)="loadItemForEdit()"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="currentItem">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">物品名称</ion-label>
+      <ion-input [(ngModel)]="currentItem.item_name" disabled></ion-input>
+    </ion-item>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <ion-item>
+      <ion-label position="stacked">类别</ion-label>
+      <ion-select [(ngModel)]="currentItem.category">
+        <ion-select-option value="Electronics">Electronics</ion-select-option>
+        <ion-select-option value="Furniture">Furniture</ion-select-option>
+        <ion-select-option value="Clothing">Clothing</ion-select-option>
+        <ion-select-option value="Tools">Tools</ion-select-option>
+        <ion-select-option value="Miscellaneous">Miscellaneous</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">数量</ion-label>
+      <ion-input type="number" [(ngModel)]="currentItem.quantity"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">价格</ion-label>
+      <ion-input type="number" [(ngModel)]="currentItem.price"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">供应商名称</ion-label>
+      <ion-input [(ngModel)]="currentItem.supplier_name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">库存状态</ion-label>
+      <ion-select [(ngModel)]="currentItem.stock_status">
+        <ion-select-option value="In Stock">In Stock</ion-select-option>
+        <ion-select-option value="Low Stock">Low Stock</ion-select-option>
+        <ion-select-option value="Out of Stock">Out of Stock</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>设为推荐商品</ion-label>
+      <ion-toggle [(ngModel)]="currentItem.featured_item" [trueValue]="1" [falseValue]="0"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">备注</ion-label>
+      <ion-textarea [(ngModel)]="currentItem.special_note"></ion-textarea>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="updateItem()">
+            更新物品
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" color="danger" (click)="deleteItem()">
+            删除物品
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+</ion-content>
+
+<ion-content *ngIf="!currentItem && searchName">
+  <ion-note class="ion-padding">未找到名称为 "{{ searchName }}" 的物品</ion-note>
 </ion-content>
