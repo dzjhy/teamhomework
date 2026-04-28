@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>隐私与安全</ion-title>
+    <!-- 作业要求：每个页面必须有帮助按钮 -->
+    <ion-buttons slot="end">
+      <ion-button (click)="openHelp()">
+        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h2>隐私政策说明</h2>
+  <p>本应用为南十字星大学PROG2005课程作业项目，仅用于移动应用开发学习演示，不用于商业用途。</p>
+  
+  <h3>数据收集与使用</h3>
+  <ul>
+    <li>本应用不会收集、存储或传输任何用户的个人身份信息、设备信息、位置信息等隐私数据。</li>
+    <li>所有库存业务数据仅存储于课程指定的远程服务器，仅用于实现作业要求的CRUD功能演示。</li>
+    <li>不会向任何第三方共享、泄露任何数据，所有数据传输仅用于课程作业功能实现。</li>
+  </ul>
+
+  <h2>安全保障措施</h2>
+  <ul>
+    <li>应用与服务端的所有通信均采用HTTPS加密协议，保障数据传输过程的安全性。</li>
+    <li>所有表单输入均实现严格的校验规则，防止无效数据、非法数据提交。</li>
+    <li>删除操作设置二次确认机制，防止用户误操作导致数据丢失。</li>
+    <li>严格遵循作业要求，限制关键物品的删除权限，禁止删除预设的Laptop基准记录。</li>
+    <li>代码实现严格遵循类型安全规范，避免运行时异常与安全漏洞。</li>
+  </ul>
+
+  <h2>用户权利与说明</h2>
+  <p>作为本课程作业应用的使用者，你可以通过应用的功能自由管理库存数据。如有任何关于隐私与安全的问题，请联系课程辅导教师或单元讲师。</p>
+</ion-content>

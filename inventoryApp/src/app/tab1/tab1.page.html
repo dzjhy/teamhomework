@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>库存列表</ion-title>
+    <!-- 作业要求：每个页面必须有帮助按钮 -->
+    <ion-buttons slot="end">
+      <ion-button (click)="openHelp()">
+        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- 搜索栏：作业要求按名称搜索单条记录 -->
+  <ion-toolbar>
+    <ion-searchbar 
+      [(ngModel)]="searchKeyword" 
+      (ionInput)="filterInventoryList()"
+      placeholder="输入物品名称搜索"
+      clear-button="always"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- 库存列表 -->
+  <ion-list *ngIf="filteredList.length > 0; else emptyState">
+    <ion-item *ngFor="let item of filteredList" lines="inset">
+      <ion-label>
+        <h2>
+          {{ item.item_name }}
+          <ion-badge *ngIf="item.featured_item === 1" color="warning" class="ion-margin-start">精选</ion-badge>
+        </h2>
+        <p>品类：{{ item.category }} | 供应商：{{ item.supplier_name }}</p>
+        <p>库存数量：{{ item.quantity }} | 单价：${{ item.price }}</p>
+      </ion-label>
+      <!-- 库存状态颜色标识 -->
+      <ion-note slot="end" [color]="getStatusColor(item.stock_status)">
+        {{ item.stock_status }}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <!-- 空状态 -->
+  <ng-template #emptyState>
+    <div class="empty-container ion-text-center ion-padding">
+      <ion-icon name="inbox-outline" class="empty-icon"></ion-icon>
+      <p>{{ searchKeyword ? '未找到匹配的物品' : '暂无库存数据' }}</p>
+    </div>
+  </ng-template>
+
+  <!-- 下拉刷新 -->
+  <ion-refresher slot="fixed" (ionRefresh)="loadInventoryList($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+</ion-content>

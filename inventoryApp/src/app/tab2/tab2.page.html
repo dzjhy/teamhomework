@@ -1,0 +1,136 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>新增/精选物品</ion-title>
+    <!-- 作业要求：每个页面必须有帮助按钮 -->
+    <ion-buttons slot="end">
+      <ion-button (click)="openHelp()">
+        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- 新增记录表单：作业要求的完整字段+校验 -->
+  <form [formGroup]="addForm" (ngSubmit)="submitAddForm()">
+    <ion-list-header>
+      <ion-label>新增库存记录</ion-label>
+    </ion-list-header>
+
+    <!-- 物品名称 -->
+    <ion-item>
+      <ion-label position="stacked">物品名称 <span class="required">*</span></ion-label>
+      <ion-input 
+        formControlName="item_name" 
+        placeholder="输入唯一的物品名称"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="addForm.get('item_name')?.invalid && addForm.get('item_name')?.touched">
+      物品名称为必填项
+    </ion-note>
+
+    <!-- 品类选择 -->
+    <ion-item>
+      <ion-label position="stacked">品类 <span class="required">*</span></ion-label>
+      <ion-select formControlName="category" placeholder="选择物品品类">
+        <ion-select-option *ngFor="let cat of categoryList" [value]="cat">
+          {{ cat }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- 库存数量 -->
+    <ion-item>
+      <ion-label position="stacked">库存数量 <span class="required">*</span></ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="quantity" 
+        placeholder="输入整数库存数量"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="addForm.get('quantity')?.invalid && addForm.get('quantity')?.touched">
+      请输入有效的非负整数
+    </ion-note>
+
+    <!-- 价格 -->
+    <ion-item>
+      <ion-label position="stacked">单价 <span class="required">*</span></ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="price" 
+        placeholder="输入整数单价"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="addForm.get('price')?.invalid && addForm.get('price')?.touched">
+      请输入有效的非负整数
+    </ion-note>
+
+    <!-- 供应商名称 -->
+    <ion-item>
+      <ion-label position="stacked">供应商名称 <span class="required">*</span></ion-label>
+      <ion-input 
+        formControlName="supplier_name" 
+        placeholder="输入供应商名称"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="addForm.get('supplier_name')?.invalid && addForm.get('supplier_name')?.touched">
+      供应商名称为必填项
+    </ion-note>
+
+    <!-- 库存状态 -->
+    <ion-item>
+      <ion-label position="stacked">库存状态 <span class="required">*</span></ion-label>
+      <ion-select formControlName="stock_status" placeholder="选择库存状态">
+        <ion-select-option *ngFor="let status of stockStatusList" [value]="status">
+          {{ status }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- 精选物品 -->
+    <ion-item>
+      <ion-label>设为精选物品</ion-label>
+      <ion-toggle formControlName="featured_item"></ion-toggle>
+    </ion-item>
+
+    <!-- 特殊备注 -->
+    <ion-item>
+      <ion-label position="stacked">特殊备注（可选）</ion-label>
+      <ion-textarea 
+        formControlName="special_note" 
+        placeholder="输入备注信息"
+        rows="3"
+      ></ion-textarea>
+    </ion-item>
+
+    <!-- 提交按钮 -->
+    <ion-button 
+      type="submit" 
+      expand="block" 
+      color="primary" 
+      class="ion-margin-top"
+      [disabled]="!addForm.valid"
+    >
+      提交新增
+    </ion-button>
+  </form>
+
+  <!-- 精选物品列表：作业要求 -->
+  <ion-list-header class="ion-margin-top">
+    <ion-label>精选物品列表</ion-label>
+  </ion-list-header>
+
+  <ion-list *ngIf="featuredList.length > 0; else noFeatured">
+    <ion-item *ngFor="let item of featuredList" lines="inset">
+      <ion-label>
+        <h2>{{ item.item_name }}</h2>
+        <p>单价：${{ item.price }} | 库存：{{ item.quantity }}</p>
+        <p>供应商：{{ item.supplier_name }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noFeatured>
+    <ion-note class="ion-padding">暂无精选物品</ion-note>
+  </ng-template>
+</ion-content>

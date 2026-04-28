@@ -1,0 +1,137 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>编辑/删除物品</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openHelp()">
+        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- 按名称搜索物品 -->
+  <ion-item>
+    <ion-label position="stacked">输入要操作的物品名称</ion-label>
+    <ion-input 
+      [(ngModel)]="searchItemName" 
+      placeholder="输入物品完整名称"
+    ></ion-input>
+  </ion-item>
+
+  <ion-button 
+    expand="block" 
+    class="ion-margin-top"
+    (click)="searchTargetItem()"
+    [disabled]="!searchItemName.trim()"
+  >
+    搜索物品
+  </ion-button>
+
+  <!-- 编辑表单：仅搜索到物品后显示 -->
+  <form *ngIf="targetItem && editForm" [formGroup]="editForm" (ngSubmit)="submitUpdate()" class="ion-margin-top">
+    <ion-list-header>
+      <ion-label>编辑物品信息</ion-label>
+    </ion-list-header>
+
+    <!-- 物品名称（不可修改，禁用状态在FormControl里定义，彻底解决类型报错） -->
+    <ion-item>
+      <ion-label position="stacked">物品名称（不可修改）</ion-label>
+      <ion-input formControlName="item_name"></ion-input>
+    </ion-item>
+
+    <!-- 品类选择 -->
+    <ion-item>
+      <ion-label position="stacked">品类 <span class="required">*</span></ion-label>
+      <ion-select formControlName="category" placeholder="选择物品品类">
+        <ion-select-option *ngFor="let cat of categoryList" [value]="cat">
+          {{ cat }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- 库存数量 -->
+    <ion-item>
+      <ion-label position="stacked">库存数量 <span class="required">*</span></ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="quantity" 
+        placeholder="输入整数库存数量"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="editForm.get('quantity')?.invalid && editForm.get('quantity')?.touched">
+      请输入有效的非负整数
+    </ion-note>
+
+    <!-- 价格 -->
+    <ion-item>
+      <ion-label position="stacked">单价 <span class="required">*</span></ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="price" 
+        placeholder="输入整数单价"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="editForm.get('price')?.invalid && editForm.get('price')?.touched">
+      请输入有效的非负整数
+    </ion-note>
+
+    <!-- 供应商名称 -->
+    <ion-item>
+      <ion-label position="stacked">供应商名称 <span class="required">*</span></ion-label>
+      <ion-input 
+        formControlName="supplier_name" 
+        placeholder="输入供应商名称"
+      ></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="editForm.get('supplier_name')?.invalid && editForm.get('supplier_name')?.touched">
+      供应商名称为必填项
+    </ion-note>
+
+    <!-- 库存状态 -->
+    <ion-item>
+      <ion-label position="stacked">库存状态 <span class="required">*</span></ion-label>
+      <ion-select formControlName="stock_status" placeholder="选择库存状态">
+        <ion-select-option *ngFor="let status of stockStatusList" [value]="status">
+          {{ status }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- 精选物品 -->
+    <ion-item>
+      <ion-label>设为精选物品</ion-label>
+      <ion-toggle formControlName="featured_item"></ion-toggle>
+    </ion-item>
+
+    <!-- 特殊备注 -->
+    <ion-item>
+      <ion-label position="stacked">特殊备注（可选）</ion-label>
+      <ion-textarea 
+        formControlName="special_note" 
+        placeholder="输入备注信息"
+        rows="3"
+      ></ion-textarea>
+    </ion-item>
+
+    <!-- 操作按钮 -->
+    <ion-button 
+      type="submit" 
+      expand="block" 
+      color="primary" 
+      class="ion-margin-top"
+      [disabled]="!editForm.valid"
+    >
+      保存修改
+    </ion-button>
+
+    <ion-button 
+      expand="block" 
+      color="danger" 
+      class="ion-margin-top"
+      (click)="confirmDelete()"
+    >
+      删除该物品
+    </ion-button>
+  </form>
+</ion-content>
